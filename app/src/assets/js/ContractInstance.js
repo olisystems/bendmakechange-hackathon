@@ -1,5 +1,5 @@
 import web3 from './web3';
-import simpleStorageArtifact from "../../../../build/contracts/SimpleStorage.json";
+import simpleStorageArtifact from "./contracts/SimpleStorage";
 
 const ContractInstance = async function test() {
 
