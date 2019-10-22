@@ -2,6 +2,9 @@
 node_modules
 /dist
 
+# build contracts files
+src/assets/js/contracts
+
 # local env files
 .env.local
 .env.*.local
