@@ -18,7 +18,8 @@
  *
  */
 
-// const HDWalletProvider = require('truffle-hdwallet-provider');
+const HDWalletProvider = require('truffle-hdwallet-provider');
+var MNEMONIC = "YOUR KEY";
 // const infuraKey = "fj4jll3k.....";
 //
 // const fs = require('fs');
@@ -71,11 +72,11 @@ module.exports = {
     // },
 
     // Useful for private networks
-    // private: {
-    // provider: () => new HDWalletProvider(mnemonic, `https://network.io`),
-    // network_id: 2111,   // This network is yours, in the cloud.
-    // production: true    // Treats this network as if it was a public net. (default: false)
-    // }
+    private: {
+      provider: () => new HDWalletProvider(MNEMONIC, 'http://volta-rpc.energyweb.org/'),
+      network_id: '*',   // This network is yours, in the cloud.
+      production: true    // Treats this network as if it was a public net. (default: false)
+    }
   },
 
   // Set default mocha options here, use special reporters etc.
