@@ -11,7 +11,7 @@ contract('WPPCrowdsale', function (accounts) {
 
         await wPPCrowdsale.invest({ from: ownerID, value: 1 })
         let investment = await wPPCrowdsale.getTotalInvestment.call()
-        investment = (web3.fromWei(xx.toNumber(), "wei"));
+        investment = (web3.fromWei(investment.toNumber(), "wei"));
 
 
         assert.equal(investment, 1, 'Invalid event emitted')
