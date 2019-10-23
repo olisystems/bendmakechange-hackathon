@@ -1,4 +1,4 @@
-pragma solidity ^0.5.2;
+pragma solidity >=0.4.16 <0.6.0;
 
 import './CrowdsaleCoin.sol';
 
@@ -51,7 +51,25 @@ contract WPPCrowdsale {
     * lock tokens until the crowdsale is finished
     */
     function invest() public payable {
+        // accept funds
+        require(isValidInvestment(msg.value));
+        
+        investmentAmountOf[msg.sender] += msg.value;
+        investmentReceived += msg.value;
 
+        // convert funds into tokens
+
+    }
+
+    function isValidInvestment(uint256 _investment) internal view returns (bool){
+        // check if investment is valid 
+        // funds are not zero
+        // crowdsale period is not expired
+        bool nonZeroInvestment = _investment != 0;
+        // only for test purpose
+        // bool withinCrowdsalePeriod = now >= startTime && now <= endTime;
+        bool withinCrowdsalePeriod = true;
+        return nonZeroInvestment && withinCrowdsalePeriod;
     }
 
     /*
@@ -62,7 +80,7 @@ contract WPPCrowdsale {
     * 2. else
     * refund investments to investors
     */
-    function finalize() onlyOwner public {
+    function finalize() public {
 
     }
 
@@ -73,6 +91,10 @@ contract WPPCrowdsale {
     */
     function refund() public {
 
+    }
+    
+    function getTotalInvestment()public view returns(uint256){
+        return investmentReceived;
     }
 
 }
