@@ -8,13 +8,11 @@ contract('WPPCrowdsale', function (accounts) {
     it("Testing smart contract function invest() that allows an investor to invest funds", async () => {
         const wPPCrowdsale = await WPPCrowdsale.deployed()
 
-
         await wPPCrowdsale.invest({ from: ownerID, value: 1 })
         let investment = await wPPCrowdsale.getTotalInvestment.call()
-        investment = (web3.fromWei(investment.toNumber(), "wei"));
+        investment = web3.utils.fromWei(investment, "ether");
 
-
-        assert.equal(investment, 1, 'Invalid event emitted')
+        assert.equal(investment, 0.000000000000000001, 'Invalid event emitted')
     })
 
 
