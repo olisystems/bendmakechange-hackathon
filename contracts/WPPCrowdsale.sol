@@ -1,6 +1,6 @@
 pragma solidity ^0.5.2;
 
-import './CrowdsaleToken.sol';
+import './CrowdsaleCoin.sol';
 
 contract WPPCrowdsale {
 
@@ -20,7 +20,7 @@ contract WPPCrowdsale {
     address public owner;
 
     // instance of the token contract
-    CrowdsaleToken public crowdsaleToken;
+    CrowdsaleCoin public crowdsaleCoin;
 
     /*
     * take state variables as input
@@ -28,7 +28,20 @@ contract WPPCrowdsale {
     * instantiate
     */
     constructor(uint256 _startTime, uint256 _endTime, uint256 _weiTokenPrice, uint256 _weiInvestmentObjective) public{
+        require(_startTime >= now);
+        require(_endTime >= _startTime);
+        require(_weiTokenPrice != 0);
+        require(_weiInvestmentObjective != 0);
 
+        startTime = _startTime;
+        endTime = _endTime;
+        weiTokenPrice = _weiTokenPrice;
+        weiInvestmentObjective = _weiInvestmentObjective * 1000000000000000000;
+
+        crowdsaleCoin = new CrowdsaleCoin(0);
+        isFinalized = false;
+        isRefundingAllowed = false;
+        owner = msg.sender;
     }
 
     /*
