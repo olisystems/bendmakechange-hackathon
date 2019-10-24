@@ -1,6 +1,6 @@
 pragma solidity >=0.4.16 <0.6.0;
 
-import './CrowdsaleCoin.sol';
+import './CrowdsaleToken.sol';
 
 contract WPPCrowdsale {
 
@@ -23,7 +23,7 @@ contract WPPCrowdsale {
     event LogInvestment(address indexed investor, uint256 investment);
 
     // instance of the token contract
-    CrowdsaleCoin public crowdsaleCoin;
+    CrowdsaleToken public crowdsaleToken;
 
     /*
     * take state variables as input
@@ -41,7 +41,7 @@ contract WPPCrowdsale {
         weiTokenPrice = _weiTokenPrice;
         weiInvestmentObjective = _weiInvestmentObjective * 1000000000000000000;
 
-        crowdsaleCoin = new CrowdsaleCoin(0);
+        crowdsaleToken = new CrowdsaleToken(0);
         isFinalized = false;
         isRefundingAllowed = false;
         owner = msg.sender;
@@ -78,7 +78,7 @@ contract WPPCrowdsale {
 
     function assignTokens(address _beneficiary, uint256 _investment) internal {
         uint256 _tokens = calculateTokens(_investment);
-        crowdsaleCoin.mint(_beneficiary, _tokens);
+        crowdsaleToken.mint(_beneficiary, _tokens);
     }
 
     function calculateTokens(uint256 _investment) internal view returns (uint256){
