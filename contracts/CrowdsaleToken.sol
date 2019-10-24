@@ -3,7 +3,7 @@ pragma solidity >=0.4.16 <0.6.0;
 import "./SafeMath.sol";
 import "./Ownable.sol";
 
-contract CrowdsaleCoin is Ownable {
+contract CrowdsaleToken is Ownable {
 
     using SafeMath for uint;
     uint256 public totalTokenSupply;
