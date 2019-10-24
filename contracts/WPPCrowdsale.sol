@@ -19,6 +19,9 @@ contract WPPCrowdsale {
     bool public isRefundingAllowed;
     address public owner;
 
+    // events
+    event LogInvestment(address indexed investor, uint256 investment);
+
     // instance of the token contract
     CrowdsaleCoin public crowdsaleCoin;
 
@@ -53,23 +56,33 @@ contract WPPCrowdsale {
     function invest() public payable {
         // accept funds
         require(isValidInvestment(msg.value));
-        
+
         investmentAmountOf[msg.sender] += msg.value;
         investmentReceived += msg.value;
 
         // convert funds into tokens
+        assignTokens(msg.sender, msg.value);
+        emit LogInvestment(msg.sender, msg.value);
 
     }
 
     function isValidInvestment(uint256 _investment) internal view returns (bool){
-        // check if investment is valid 
+        // check if investment is valid
         // funds are not zero
         // crowdsale period is not expired
         bool nonZeroInvestment = _investment != 0;
         // only for test purpose
-        // bool withinCrowdsalePeriod = now >= startTime && now <= endTime;
-        bool withinCrowdsalePeriod = true;
+        bool withinCrowdsalePeriod = now >= startTime && now <= endTime;
         return nonZeroInvestment && withinCrowdsalePeriod;
+    }
+
+    function assignTokens(address _beneficiary, uint256 _investment) internal {
+        uint256 _tokens = calculateTokens(_investment);
+        crowdsaleCoin.mint(_beneficiary, _tokens);
+    }
+
+    function calculateTokens(uint256 _investment) internal view returns (uint256){
+        return _investment / weiTokenPrice;
     }
 
     /*
@@ -92,8 +105,8 @@ contract WPPCrowdsale {
     function refund() public {
 
     }
-    
-    function getTotalInvestment()public view returns(uint256){
+
+    function getTotalInvestment() public view returns (uint256){
         return investmentReceived;
     }
 
