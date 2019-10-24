@@ -1,8 +1,9 @@
 pragma solidity >=0.4.16 <0.6.0;
 
 import "./SafeMath.sol";
+import "./Ownable.sol";
 
-contract CrowdsaleCoin {
+contract CrowdsaleCoin is Ownable {
 
     using SafeMath for uint;
     uint256 public totalTokenSupply;
@@ -18,8 +19,8 @@ contract CrowdsaleCoin {
     uint8 public constant decimals = 2;
 
     // 2. mapping
-    mapping(address => uint256) private balances;
-    mapping(address => mapping(address => uint256)) private allowances;
+    mapping(address => uint256) public balances;
+    mapping(address => mapping(address => uint256)) public allowances;
 
     // 3. events
     event Transfer(address indexed from, address indexed to, uint256 tokens);
@@ -78,6 +79,13 @@ contract CrowdsaleCoin {
         allowances[_from][msg.sender] = allowances[_from][msg.sender].sub(_tokens);
         emit Transfer(_from, _to, _tokens);
         return true;
+    }
+
+    // mint new coins
+    function mint(address _recipient, uint256 _mintedAmount)
+    onlyOwner public {
+        balances[_recipient] += _mintedAmount;
+        emit Transfer(msg.sender, _recipient, _mintedAmount);
     }
 
 }
