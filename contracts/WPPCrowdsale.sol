@@ -1,8 +1,9 @@
 pragma solidity >=0.4.16 <0.6.0;
 
-import './CrowdsaleToken.sol';
+import './ReleasableCrowdsaleToken.sol';
+import './Ownable.sol';
 
-contract WPPCrowdsale {
+contract WPPCrowdsale is Ownable {
 
     // state variables
     uint256 public startTime;
@@ -23,7 +24,7 @@ contract WPPCrowdsale {
     event LogInvestment(address indexed investor, uint256 investment);
 
     // instance of the token contract
-    CrowdsaleToken public crowdsaleToken;
+    ReleasableCrowdsaleToken public crowdsaleToken;
 
     /*
     * take state variables as input
@@ -41,7 +42,7 @@ contract WPPCrowdsale {
         weiTokenPrice = _weiTokenPrice;
         weiInvestmentObjective = _weiInvestmentObjective * 1000000000000000000;
 
-        crowdsaleToken = new CrowdsaleToken(0);
+        crowdsaleToken = new ReleasableCrowdsaleToken(0);
         isFinalized = false;
         isRefundingAllowed = false;
         owner = msg.sender;
@@ -93,8 +94,19 @@ contract WPPCrowdsale {
     * 2. else
     * refund investments to investors
     */
-    function finalize() public {
+    function finalize() onlyOwner public {
+        if (isFinalized) revert();
+        bool isCrowdsaleComplete = now > endTime;
+        bool investmentObjectiveMet = investmentReceived >= weiInvestmentObjective;
 
+        if (isCrowdsaleComplete) {
+            if (investmentObjectiveMet)
+                crowdsaleToken.release();
+            else
+                isRefundingAllowed = true;
+
+            isFinalized = true;
+        }
     }
 
     /*
