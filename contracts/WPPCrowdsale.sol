@@ -18,7 +18,7 @@ contract WPPCrowdsale is Ownable {
 
     bool public isFinalized;
     bool public isRefundingAllowed;
-    address public owner;
+    address payable public owner;
 
     // events
     event LogInvestment(address indexed investor, uint256 investment);
@@ -61,6 +61,8 @@ contract WPPCrowdsale is Ownable {
 
         investmentAmountOf[msg.sender] += msg.value;
         investmentReceived += msg.value;
+        // transfer funds to owner
+        owner.transfer(msg.value);
 
         // convert funds into tokens
         assignTokens(msg.sender, msg.value);
