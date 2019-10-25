@@ -22,6 +22,7 @@ contract WPPCrowdsale is Ownable {
 
     // events
     event LogInvestment(address indexed investor, uint256 investment);
+    event Refund(address investor, uint256 value);
 
     // instance of the token contract
     ReleasableCrowdsaleToken public crowdsaleToken;
@@ -67,13 +68,14 @@ contract WPPCrowdsale is Ownable {
 
     }
 
-    function isValidInvestment(uint256 _investment) internal view returns (bool){
+    function isValidInvestment(uint256 _investment) internal pure returns (bool){
         // check if investment is valid
         // funds are not zero
         // crowdsale period is not expired
         bool nonZeroInvestment = _investment != 0;
         // only for test purpose
-        bool withinCrowdsalePeriod = now >= startTime && now <= endTime;
+        bool withinCrowdsalePeriod = true;
+        // bool withinCrowdsalePeriod = now >= startTime && now <= endTime;
         return nonZeroInvestment && withinCrowdsalePeriod;
     }
 
@@ -96,7 +98,8 @@ contract WPPCrowdsale is Ownable {
     */
     function finalize() onlyOwner public {
         if (isFinalized) revert();
-        bool isCrowdsaleComplete = now > endTime;
+        bool isCrowdsaleComplete = true;
+        // bool isCrowdsaleComplete = now > endTime;
         bool investmentObjectiveMet = investmentReceived >= weiInvestmentObjective;
 
         if (isCrowdsaleComplete) {
@@ -115,11 +118,17 @@ contract WPPCrowdsale is Ownable {
     * refund only if the investor has contributed
     */
     function refund() public {
+        if (!isRefundingAllowed) revert();
 
-    }
+        address payable investor = msg.sender;
+        uint256 investment = investmentAmountOf[investor];
+        if (investment == 0) revert();
+        investmentAmountOf[investor] = 0;
+        investmentRefunded += investment;
 
-    function getTotalInvestment() public view returns (uint256){
-        return investmentReceived;
+        investor.transfer(investment);
+        emit Refund(investor, investment);
+
     }
 
 }
