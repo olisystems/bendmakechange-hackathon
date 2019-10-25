@@ -4,7 +4,7 @@ import "./SafeMath.sol";
 import "./Ownable.sol";
 
 contract CrowdsaleToken is Ownable {
-
+    // using SafeMath library
     using SafeMath for uint;
     uint256 public totalTokenSupply;
 

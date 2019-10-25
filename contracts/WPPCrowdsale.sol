@@ -18,6 +18,7 @@ contract WPPCrowdsale is Ownable {
 
     bool public isFinalized;
     bool public isRefundingAllowed;
+    // address to store project funds
     address payable public owner;
 
     // events
@@ -70,14 +71,14 @@ contract WPPCrowdsale is Ownable {
 
     }
 
-    function isValidInvestment(uint256 _investment) internal pure returns (bool){
+    function isValidInvestment(uint256 _investment) internal view returns (bool){
         // check if investment is valid
         // funds are not zero
         // crowdsale period is not expired
         bool nonZeroInvestment = _investment != 0;
         // only for test purpose
-        bool withinCrowdsalePeriod = true;
-        // bool withinCrowdsalePeriod = now >= startTime && now <= endTime;
+        // bool withinCrowdsalePeriod = true;
+        bool withinCrowdsalePeriod = now >= startTime && now <= endTime;
         return nonZeroInvestment && withinCrowdsalePeriod;
     }
 
@@ -100,8 +101,9 @@ contract WPPCrowdsale is Ownable {
     */
     function finalize() onlyOwner public {
         if (isFinalized) revert();
-        bool isCrowdsaleComplete = true;
-        // bool isCrowdsaleComplete = now > endTime;
+        // only for test purpose
+        // bool isCrowdsaleComplete = true;
+        bool isCrowdsaleComplete = now > endTime;
         bool investmentObjectiveMet = investmentReceived >= weiInvestmentObjective;
 
         if (isCrowdsaleComplete) {
