@@ -3,7 +3,7 @@ pragma solidity >=0.4.16 <0.6.0;
 import './ReleasableCrowdsaleToken.sol';
 import './Ownable.sol';
 
-contract WPPCrowdsale is Ownable {
+contract WPPCrowdsale is Ownable, CrowdsaleToken {
 
     // state variables
     uint256 public startTime;
@@ -25,15 +25,12 @@ contract WPPCrowdsale is Ownable {
     event LogInvestment(address indexed investor, uint256 investment);
     event Refund(address investor, uint256 value);
 
-    // instance of the token contract
-    ReleasableCrowdsaleToken public crowdsaleToken;
-
     /*
     * take state variables as input
     * validate
     * instantiate
     */
-    constructor(uint256 _startTime, uint256 _endTime, uint256 _weiTokenPrice, uint256 _weiInvestmentObjective) public{
+    constructor(uint256 _startTime, uint256 _endTime, uint256 _weiTokenPrice, uint256 _weiInvestmentObjective, uint256 _initialSupply) CrowdsaleToken(_initialSupply) public{
         require(_startTime >= now);
         require(_endTime >= _startTime);
         require(_weiTokenPrice != 0);
@@ -44,7 +41,6 @@ contract WPPCrowdsale is Ownable {
         weiTokenPrice = _weiTokenPrice;
         weiInvestmentObjective = _weiInvestmentObjective * 1000000000000000000;
 
-        crowdsaleToken = new ReleasableCrowdsaleToken(0);
         isFinalized = false;
         isRefundingAllowed = false;
         owner = msg.sender;
@@ -77,14 +73,14 @@ contract WPPCrowdsale is Ownable {
         // crowdsale period is not expired
         bool nonZeroInvestment = _investment != 0;
         // only for test purpose
-        // bool withinCrowdsalePeriod = true;
+        //bool withinCrowdsalePeriod = true;
         bool withinCrowdsalePeriod = now >= startTime && now <= endTime;
         return nonZeroInvestment && withinCrowdsalePeriod;
     }
 
     function assignTokens(address _beneficiary, uint256 _investment) internal {
         uint256 _tokens = calculateTokens(_investment);
-        crowdsaleToken.mint(_beneficiary, _tokens);
+        super.mint(_beneficiary, _tokens);
     }
 
     function calculateTokens(uint256 _investment) internal view returns (uint256){
@@ -108,7 +104,7 @@ contract WPPCrowdsale is Ownable {
 
         if (isCrowdsaleComplete) {
             if (investmentObjectiveMet)
-                crowdsaleToken.release();
+                super.release();
             else
                 isRefundingAllowed = true;
 
