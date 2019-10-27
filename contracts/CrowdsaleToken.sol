@@ -18,6 +18,16 @@ contract CrowdsaleToken is Ownable {
      */
     uint8 public constant decimals = 2;
 
+    // initially set the release of tokens to false
+    bool public released = false;
+    // modifier to release tokens
+    modifier isReleased(){
+        if (!released) {
+            revert();
+        }
+        _;
+    }
+
     // 2. mapping
     mapping(address => uint256) public balances;
     mapping(address => mapping(address => uint256)) public allowances;
@@ -30,13 +40,18 @@ contract CrowdsaleToken is Ownable {
         totalTokenSupply = _supply;
     }
 
+    // onlyOwner can release
+    function release() onlyOwner public {
+        released = true;
+    }
+
     // get total token supply
     function getTotalSupply() public view returns (uint256){
         return totalTokenSupply;
     }
 
     // transfer tokens function
-    function transfer(address _to, uint256 _tokens) public returns (bool) {
+    function transfer(address _to, uint256 _tokens) isReleased public returns (bool) {
         // check if sender has enough token to transfer
         require(balances[msg.sender] >= _tokens && _tokens > 0);
 
@@ -68,7 +83,7 @@ contract CrowdsaleToken is Ownable {
     }
 
     // spending allowed tokens on behalf of owner
-    function transferFrom(address _from, address _to, uint256 _tokens) public returns (bool success) {
+    function transferFrom(address _from, address _to, uint256 _tokens) isReleased public returns (bool success) {
         require(_tokens > 0
         && balances[_from] >= _tokens
             && allowances[_from][msg.sender] >= _tokens);
