@@ -1,6 +1,6 @@
 pragma solidity >=0.4.16 <0.6.0;
 
-import './ReleasableCrowdsaleToken.sol';
+import './CrowdsaleToken.sol';
 import './Ownable.sol';
 
 contract WPPCrowdsale is Ownable, CrowdsaleToken {
@@ -67,14 +67,14 @@ contract WPPCrowdsale is Ownable, CrowdsaleToken {
 
     }
 
-    function isValidInvestment(uint256 _investment) internal view returns (bool){
+    function isValidInvestment(uint256 _investment) internal pure returns (bool){
         // check if investment is valid
         // funds are not zero
         // crowdsale period is not expired
         bool nonZeroInvestment = _investment != 0;
         // only for test purpose
-        //bool withinCrowdsalePeriod = true;
-        bool withinCrowdsalePeriod = now >= startTime && now <= endTime;
+        bool withinCrowdsalePeriod = true;
+        //bool withinCrowdsalePeriod = now >= startTime && now <= endTime;
         return nonZeroInvestment && withinCrowdsalePeriod;
     }
 
@@ -98,8 +98,8 @@ contract WPPCrowdsale is Ownable, CrowdsaleToken {
     function finalize() onlyOwner public {
         if (isFinalized) revert();
         // only for test purpose
-        // bool isCrowdsaleComplete = true;
-        bool isCrowdsaleComplete = now > endTime;
+         bool isCrowdsaleComplete = true;
+        //bool isCrowdsaleComplete = now > endTime;
         bool investmentObjectiveMet = investmentReceived >= weiInvestmentObjective;
 
         if (isCrowdsaleComplete) {
@@ -129,6 +129,26 @@ contract WPPCrowdsale is Ownable, CrowdsaleToken {
         investor.transfer(investment);
         emit Refund(investor, investment);
 
+    }
+    
+    function getStartTime()public view returns(uint256){
+        return startTime;
+    }
+    
+    function getEndTime()public view returns(uint256){
+        return endTime;
+    }
+    
+    function getTotalInvestment()public view returns(uint256){
+        return investmentReceived;
+    }
+    
+    function getFinalizedStatus()public view returns(bool){
+        return isFinalized;
+    }
+    
+    function getRefundingStatus()public view returns(bool){
+        return isRefundingAllowed;
     }
 
 }
