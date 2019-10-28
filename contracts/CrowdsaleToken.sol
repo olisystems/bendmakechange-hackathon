@@ -17,7 +17,7 @@ contract CrowdsaleToken is Ownable {
      * E.g. decimals = 1, value 100 => 10.0
      */
     uint8 public constant decimals = 2;
-
+    
     // initially set the release of tokens to false
     bool public released = false;
     // modifier to release tokens
@@ -39,7 +39,7 @@ contract CrowdsaleToken is Ownable {
     constructor(uint256 _supply) public{
         totalTokenSupply = _supply;
     }
-
+    
     // onlyOwner can release
     function release() onlyOwner public {
         released = true;
@@ -98,7 +98,7 @@ contract CrowdsaleToken is Ownable {
 
     // mint new coins
     function mint(address _recipient, uint256 _mintedAmount)
-    onlyOwner public {
+     public {
         balances[_recipient] += _mintedAmount;
         emit Transfer(msg.sender, _recipient, _mintedAmount);
     }
