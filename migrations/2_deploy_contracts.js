@@ -1,10 +1,11 @@
-const SimpleStorage = artifacts.require("SimpleStorage");
-const WPPCrowdsale = artifacts.require("WPPCrowdsale");
+
+const EnergySupply = artifacts.require("EnergySupply");
 
 module.exports = function (deployer) {
-    const currentTime = Math.round((new Date()).getTime() / 1000);
-    const endTime = currentTime + 432000;
+    // const currentTime = (new Date).getTime();
+    let currentTime = (Math.round((new Date()).getTime() / 1000));
+    currentTime = currentTime + 250;
+    const endTime = currentTime + 432000
 
-    deployer.deploy(SimpleStorage);
-    deployer.deploy(WPPCrowdsale, currentTime, endTime, 10, 10);
+    deployer.deploy(EnergySupply, currentTime, endTime, 10, 10, 0);
 };
