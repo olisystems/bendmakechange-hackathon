@@ -3,7 +3,7 @@ pragma solidity >=0.4.16 <0.6.0;
 import './CrowdsaleToken.sol';
 import './Ownable.sol';
 
-contract WPPCrowdsale is Ownable, CrowdsaleToken {
+contract WPPCrowdsale is  CrowdsaleToken {
 
     // state variables
     uint256 public startTime;
@@ -131,24 +131,4 @@ contract WPPCrowdsale is Ownable, CrowdsaleToken {
 
     }
     
-    function getStartTime()public view returns(uint256){
-        return startTime;
-    }
-    
-    function getEndTime()public view returns(uint256){
-        return endTime;
-    }
-    
-    function getTotalInvestment()public view returns(uint256){
-        return investmentReceived;
-    }
-    
-    function getFinalizedStatus()public view returns(bool){
-        return isFinalized;
-    }
-    
-    function getRefundingStatus()public view returns(bool){
-        return isRefundingAllowed;
-    }
-
 }
