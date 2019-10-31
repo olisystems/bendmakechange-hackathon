@@ -153,54 +153,91 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.main {
+.container {
   padding: 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  text-align: left;
-  border-bottom: 2px solid #dee2e6;
-}
-.col {
-  padding: 0.5rem;
-  border: 1px solid #dee2e6;
-  background: #fff;
-  border-radius: 2px;
-  box-shadow: 0 10px 30px rgba(51, 51, 51, 0.1);
   display: flex;
   flex-direction: column;
 }
-.col-left {
-  width: 50%;
+
+.insight {
+  display: flex;
+  text-align: left;
+  align-items: flex-start;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: #e1dfe2 2px solid;
 }
-.col-center,
-.col-right {
-  width: 40%;
+
+.investors {
+  display: flex;
+  justify-content: center;
 }
+
+.col {
+  padding: 0.5rem;
+  border: 1px solid #dee2e6;
+  background: rgb(255, 252, 252);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+}
+
 .col-header {
   margin-bottom: 0.5rem;
   border-bottom: 1.5px solid #e1dfe2;
 }
 
 .col-body {
-  padding: 1.5rem;
+  padding: 1rem;
   border: 1px solid #c3c6c7;
 }
 
-.listDID,
-.resolveDID {
-  height: 300px;
+.details-col,
+.table-col {
+  height: 290px;
   overflow-y: auto;
 }
+.progress-bar {
+  margin-top: 1.5rem;
+  height: 30px;
+  border-radius: 15px;
+  border: #ddd 1px solid;
+}
 
-input {
-  width: 100%;
-  margin: 1rem;
-  padding: 0.5rem;
-  box-sizing: border-box;
-  border: 1px solid #abaeaf;
-  border-radius: 1px;
-  margin: 1rem auto;
+.percentage {
+  height: 100%;
+  border-radius: 15px;
+  background: #a5df41;
+  background-image: repeating-linear-gradient(
+    135deg,
+    #62c03c,
+    #62c03c 5px,
+    #a5df41 5px,
+    #a5df41 10px
+  );
+  animation: animate-stripes 3s linear infinite;
+}
+.percentage-label {
+  padding: 1rem;
+  text-align: center;
+}
+.label {
+  font-size: calc(0.7vw + 0.7vh + 0.7vmin);
+  color: #394f7c;
+}
+p {
+  font-weight: 400;
+  font-size: calc(0.5vw + 0.5vh + 0.5vmin);
+}
+span {
+  font-weight: bold;
+  color: #394f7c;
+  font-size: 1em;
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
 }
 
 button {
@@ -215,62 +252,68 @@ button {
   -webkit-transition-duration: 0.4s;
   transition-duration: 0.4s;
 }
-
-.list {
-  margin-top: 0;
-  padding: 0 1rem;
+.table-header {
+  /* background-color: #cdf1c3; */
+  text-align: left;
+  margin-bottom: 0.5rem;
+  border-bottom: 1.5px solid #e1dfe2;
 }
 
-li {
-  list-style-position: inside;
-  padding: 1em;
-  cursor: pointer;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-ul > li:after {
-  content: "";
-  display: block;
-  width: 85%;
-  padding-top: 0.5em;
-  border-bottom: 1px solid rgb(206, 204, 204);
+.table-wrapper {
+  border: #dee2e6 1px solid;
+  margin: 0.5rem;
+  border-radius: 2px;
 }
 
-ul > li:last-child:after {
-  border-bottom: none;
-}
-ul > li:hover {
-  background: rgba(0, 0, 0, 0.075);
+.table {
+  height: 300px;
+  overflow-y: auto;
 }
 
-.active {
-  background-color: #d6d8db;
-}
-
-.table table {
+table {
   table-layout: fixed;
   width: 100%;
+  padding: 0.5rem;
 }
-tbody {
-  text-align: left;
-}
+
 th {
-  background-color: #ccb9da;
-  padding: 5px;
+  background: #f2f0f3;
+  border: #d8d3d3 1px solid;
+  border-radius: 2px;
+  font-size: 1rem;
+  position: sticky;
+  z-index: 5;
+  top: 0;
 }
-td {
+
+.investor-col {
+  width: 70%;
+}
+
+td,
+th {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding: 10px;
+  padding: 0.5rem;
+  font-size: 0.9rem;
 }
-th,
+
 td {
   border-bottom: 1px solid #cccccc;
 }
-th:last-child,
-td:last-child {
-  width: 80px;
+
+tbody > tr:last-child > td {
+  border-bottom: none;
+}
+
+/** progress bar stripes animation */
+@keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 60px 0;
+  }
 }
 </style>
