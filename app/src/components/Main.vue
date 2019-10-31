@@ -91,8 +91,10 @@ export default {
         console.log(this.account);
       });
     },
-
+    // get investors and their investment
     getInvestors() {
+      this.investmentDetails = [];
+      this.investors = [];
       this.contract
         .getPastEvents("LogInvestment", {
           fromBlock: 0,
@@ -107,11 +109,9 @@ export default {
 
             this.investors.push(event.returnValues[0]);
           });
-
+          // filter out duplicate investors
           const uniqueInvestors = [...new Set(this.investors)];
           this.numberOfInvestors = uniqueInvestors.length;
-
-          console.log(this.investmentDetails);
         });
     },
     async getTotalInvestment() {
