@@ -41,17 +41,23 @@
       </div>
     </div>
 
-    <div class="details">
-      <table class="details-table table">
-        <tr>
-          <th>Investor</th>
+    <div class="investors">
+      <div class="col table-col table">
+        <div class="table-wrapper">
+          <v-table :data="investmentDetails">
+            <thead slot="head">
+              <th class="investor-col">Investors</th>
           <th>Investment</th>
+            </thead>
+            <tbody slot="body" slot-scope="{displayData}">
+              <tr v-for="(row, index) in displayData" :key="index">
+                <td>{{row.investor}}</td>
+                <td>{{row.investment}}</td>
         </tr>
-        <tr v-for="(tel, index) in investmentDetails" v-bind:key="index">
-          <td>{{tel.investor}}</td>
-          <td>{{tel.investment}}</td>
-        </tr>
-      </table>
+            </tbody>
+          </v-table>
+    </div>
+  </div>
     </div>
   </div>
 </template>
