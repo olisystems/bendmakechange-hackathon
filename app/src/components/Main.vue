@@ -8,15 +8,15 @@
         <div class="col-body">
           <div class="progress-bar">
             <div class="percentage" :style="{'width': percentage + '%'}"></div>
-        </div>
+          </div>
           <div class="percentage-label">
             <span>{{percentage}}%</span>
-      </div>
+          </div>
           <div class="label">
             <h4>{{investmentReceived}}/{{goal}}</h4>
           </div>
           <form v-on:submit.prevent="invest">
-            <button>Invest!</button>
+            <button>Invest</button>
           </form>
         </div>
       </div>
@@ -47,17 +47,17 @@
           <v-table :data="investmentDetails">
             <thead slot="head">
               <th class="investor-col">Investors</th>
-          <th>Investment</th>
+              <th>Investment</th>
             </thead>
             <tbody slot="body" slot-scope="{displayData}">
               <tr v-for="(row, index) in displayData" :key="index">
                 <td>{{row.investor}}</td>
                 <td>{{row.investment}}</td>
-        </tr>
+              </tr>
             </tbody>
           </v-table>
-    </div>
-  </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -76,7 +76,8 @@ export default {
       investmentDetails: [],
       numberOfInvestors: "",
       owner: "",
-      goal: ""
+      goal: "",
+      percentage: ""
     };
   },
 
@@ -88,7 +89,6 @@ export default {
           return;
         }
         this.account = res[0];
-        console.log(this.account);
       });
     },
     // get investors and their investment
@@ -120,6 +120,16 @@ export default {
         .investmentReceived()
         .call();
     },
+    // calculate percentage
+    async calculatePercentage() {
+      await this.getGoal();
+      this.percentage = ((this.investmentReceived / this.goal) * 100).toFixed(
+        2
+      );
+      if (this.percentage > 100) {
+        this.percentage = 100;
+      }
+    },
     // get the address of contract owner
     async getOwner() {
       this.owner = await this.contract.methods.owner().call();
@@ -133,11 +143,12 @@ export default {
       this.getTotalInvestment();
       this.getOwner();
       this.getGoal();
+      this.calculatePercentage();
     },
     async invest() {
       await this.contract.methods
         .invest()
-        .send({ from: this.account, value: 100167000000 });
+        .send({ from: this.account, value: 100000000167000000 });
       // fetch the updated investment
       this.getTotalInvestment();
     }
@@ -149,6 +160,7 @@ export default {
       this.getInvestors();
     }
   },
+
   async created() {
     this.getMetamaskAccount();
     this.contract = await ContractInstance();
