@@ -20,23 +20,23 @@
           </form>
         </div>
       </div>
+
+      <div class="details col">
         <div class="col-header">
           <h4>Project Details</h4>
         </div>
-        <div class="col-body resolveDID">
-          <h4>Contract Address:</h4>
-          <p>0xe8624A2AdE2B2E91F657C4B95a1558b216394801</p>
+        <div class="col-body details-col">
+          <p>Contract Address:</p>
+          <span>0xe8624A2AdE2B2E91F657C4B95a1558b216394801</span>
 
-          <h4>Owner Address:</h4>
-          <p>{{owner}}</p>
+          <p>Owner Address:</p>
+          <span>{{owner}}</span>
 
-          <h4>Contributors:</h4>
-          <p>{{numberOfInvestors}}</p>
+          <p>Contributors:</p>
+          <span>{{numberOfInvestors}}</span>
 
-          <h4>Balance:</h4>
-          <p>{{investmentReceived}}</p>
-
-          <button @click="getProjectDetails">Project Details</button>
+          <p>Balance:</p>
+          <span>{{investmentReceived}}</span>
         </div>
       </div>
     </div>
