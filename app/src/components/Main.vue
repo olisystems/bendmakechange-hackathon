@@ -1,16 +1,25 @@
 <template>
   <div class="container">
-    <div class="main">
-      <div class="col col-left">
+    <div class="insight">
+      <div class="overview col">
         <div class="col-header">
           <h4>Wind Power Plant Project</h4>
         </div>
-        <div class="col-body listDID">
-          <p>{{investmentReceived}}/{{goal}}</p>
-          <button @click="invest">Invest</button>
+        <div class="col-body">
+          <div class="progress-bar">
+            <div class="percentage" :style="{'width': percentage + '%'}"></div>
+        </div>
+          <div class="percentage-label">
+            <span>{{percentage}}%</span>
+      </div>
+          <div class="label">
+            <h4>{{investmentReceived}}/{{goal}}</h4>
+          </div>
+          <form v-on:submit.prevent="invest">
+            <button>Invest!</button>
+          </form>
         </div>
       </div>
-      <div class="col col-right">
         <div class="col-header">
           <h4>Project Details</h4>
         </div>
