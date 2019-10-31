@@ -135,14 +135,13 @@ export default {
       this.getGoal();
     },
     async invest() {
-      // create contract instance
-      //const EnergySupply = await ContractInstance();
-      this.contract.methods
+      await this.contract.methods
         .invest()
-        .send({ from: this.account, value: 100167000000 })
-        .then(function(receipt) {
-          console.log(receipt);
-        });
+        .send({ from: this.account, value: 100167000000 });
+      // fetch the updated investment
+      this.getTotalInvestment();
+    }
+  },
     }
   },
   async created() {
