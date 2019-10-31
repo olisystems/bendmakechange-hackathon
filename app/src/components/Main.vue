@@ -114,20 +114,22 @@ export default {
           this.numberOfInvestors = uniqueInvestors.length;
         });
     },
+    // get the total investment received
     async getTotalInvestment() {
       this.investmentReceived = await this.contract.methods
         .investmentReceived()
         .call();
     },
-
+    // get the address of contract owner
     async getOwner() {
       this.owner = await this.contract.methods.owner().call();
     },
+    // get the minimum investment goal
     async getGoal() {
       this.goal = await this.contract.methods.weiInvestmentObjective().call();
     },
+    // get project details
     getProjectDetails() {
-      this.getInvestors();
       this.getTotalInvestment();
       this.getOwner();
       this.getGoal();
