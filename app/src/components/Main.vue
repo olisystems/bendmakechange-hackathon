@@ -142,6 +142,11 @@ export default {
       this.getTotalInvestment();
     }
   },
+  // watch investment received
+  watch: {
+    investmentReceived() {
+      this.getProjectDetails();
+      this.getInvestors();
     }
   },
   async created() {
