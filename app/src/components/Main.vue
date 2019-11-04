@@ -334,4 +334,19 @@ tbody > tr:last-child > td {
     background-position: 60px 0;
   }
 }
+
+.label {
+  overflow-y: auto;
+}
+
+@media all and (max-width: 980px) {
+  .insight {
+    flex-direction: column;
+    align-content: center;
+  }
+
+  .insight > div {
+    margin-bottom: 1rem;
+  }
+}
 </style>
