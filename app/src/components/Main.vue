@@ -15,8 +15,18 @@
           <div class="label">
             <h4>{{investmentReceived}}/{{goal}}</h4>
           </div>
+
           <form v-on:submit.prevent="invest">
-            <button>Invest</button>
+            <div class="submit-container">
+              <input
+                type="number"
+                class="amount"
+                required
+                placeholder="100000000"
+                v-model="investmentAmount"
+              />
+              <button>Invest</button>
+            </div>
           </form>
         </div>
       </div>
@@ -77,7 +87,8 @@ export default {
       numberOfInvestors: "",
       owner: "",
       goal: "",
-      percentage: ""
+      percentage: "",
+      investmentAmount: ""
     };
   },
 
@@ -148,9 +159,10 @@ export default {
     async invest() {
       await this.contract.methods
         .invest()
-        .send({ from: this.account, value: 100000000167000000 });
+        .send({ from: this.account, value: this.investmentAmount });
       // fetch the updated investment
       this.getTotalInvestment();
+      this.investmentAmount = 0;
     }
   },
   // watch investment received
@@ -258,14 +270,37 @@ span {
   font-style: normal;
 }
 
+.submit-container {
+  padding: 1rem;
+  display: flex;
+  float: right;
+  justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+input {
+  background: #fffefe;
+  border-radius: 2px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #e9e9e9;
+  border-right: none;
+}
+
 button {
   padding: 0.8rem;
   border: 1px solid #013646;
   border-radius: 2px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
   color: #fff;
   font-size: 0.8rem;
   cursor: pointer;
-  float: right;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
   background-color: #154360;
   -webkit-transition-duration: 0.4s;
   transition-duration: 0.4s;
@@ -347,6 +382,29 @@ tbody > tr:last-child > td {
 
   .insight > div {
     margin-bottom: 1rem;
+  }
+}
+
+@media all and (max-width: 800px) {
+  .overview {
+    display: flex;
+    flex-direction: column;
+  }
+  form {
+    display: flex;
+    justify-content: center;
+  }
+  .submit-container {
+    border: 1px solid #e9e9e9;
+    flex-direction: column;
+    align-items: center;
+  }
+  input {
+    border: 1px solid #e9e9e9;
+    margin: 1rem;
+  }
+  button {
+    border-radius: 2px;
   }
 }
 </style>
