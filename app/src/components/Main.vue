@@ -162,7 +162,7 @@ export default {
         .send({ from: this.account, value: this.investmentAmount });
       // fetch the updated investment
       this.getTotalInvestment();
-      this.investmentAmount = 0;
+      this.investmentAmount = "";
     }
   },
   // watch investment received
