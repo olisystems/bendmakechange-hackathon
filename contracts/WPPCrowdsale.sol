@@ -4,6 +4,8 @@ import './CrowdsaleToken.sol';
 import './Ownable.sol';
 
 contract WPPCrowdsale is  CrowdsaleToken {
+// using SafeMath library
+    using SafeMath for uint256;
 
     // state variables
     uint256 public startTime;
@@ -39,7 +41,7 @@ contract WPPCrowdsale is  CrowdsaleToken {
         startTime = _startTime;
         endTime = _endTime;
         weiTokenPrice = _weiTokenPrice;
-        weiInvestmentObjective = _weiInvestmentObjective * 1000000000000000000;
+        weiInvestmentObjective = _weiInvestmentObjective.mul(1000000000000000000);
 
         isFinalized = false;
         isRefundingAllowed = false;
@@ -56,8 +58,8 @@ contract WPPCrowdsale is  CrowdsaleToken {
         // accept funds
         require(isValidInvestment(msg.value));
 
-        investmentAmountOf[msg.sender] += msg.value;
-        investmentReceived += msg.value;
+        investmentAmountOf[msg.sender] =investmentAmountOf[msg.sender].add( msg.value);
+        investmentReceived =investmentReceived.add( msg.value);
         // transfer funds to owner
         owner.transfer(msg.value);
 
@@ -84,7 +86,7 @@ contract WPPCrowdsale is  CrowdsaleToken {
     }
 
     function calculateTokens(uint256 _investment) internal view returns (uint256){
-        return _investment / weiTokenPrice;
+        return _investment.div(weiTokenPrice);
     }
 
     /*
@@ -124,7 +126,7 @@ contract WPPCrowdsale is  CrowdsaleToken {
         uint256 investment = investmentAmountOf[investor];
         if (investment == 0) revert();
         investmentAmountOf[investor] = 0;
-        investmentRefunded += investment;
+        investmentRefunded = investmentRefunded.add(investment);
 
         investor.transfer(investment);
         emit Refund(investor, investment);

@@ -5,7 +5,7 @@ import "./Ownable.sol";
 
 contract CrowdsaleToken is Ownable {
     // using SafeMath library
-    using SafeMath for uint;
+    using SafeMath for uint256;
     uint256 public totalTokenSupply;
 
     // 1. declaring the meta information for the coin
@@ -99,7 +99,8 @@ contract CrowdsaleToken is Ownable {
     // mint new coins
     function mint(address _recipient, uint256 _mintedAmount)
      public {
-        balances[_recipient] += _mintedAmount;
+        balances[_recipient] = balances[_recipient].add( _mintedAmount);
+        totalTokenSupply = totalTokenSupply.add(_mintedAmount);
         emit Transfer(msg.sender, _recipient, _mintedAmount);
     }
 
