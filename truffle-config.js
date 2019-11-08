@@ -19,12 +19,13 @@
  */
 
 const HDWalletProvider = require('truffle-hdwallet-provider');
-var MNEMONIC = "YOUR KEY";
+// var MNEMONIC = "YOUR KEY";
 // const infuraKey = "fj4jll3k.....";
 //
-// const fs = require('fs');
-// const mnemonic = fs.readFileSync(".secret").toString().trim();
+const fs = require('fs');
 const path = require('path');
+const MNEMONIC = fs.readFileSync("mnemonic.pwd").toString().trim();
+
 module.exports = {
   contracts_build_directory: path.join(__dirname, 'app/src/assets/js/contracts'),
   /**
@@ -72,7 +73,7 @@ module.exports = {
     // },
 
     // Useful for private networks
-    private: {
+    volta: {
       provider: () => new HDWalletProvider(MNEMONIC, 'http://volta-rpc.energyweb.org/'),
       network_id: '*',   // This network is yours, in the cloud.
       production: true    // Treats this network as if it was a public net. (default: false)
