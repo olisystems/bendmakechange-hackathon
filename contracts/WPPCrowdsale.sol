@@ -3,8 +3,8 @@ pragma solidity >=0.4.16 <0.6.0;
 import './CrowdsaleToken.sol';
 import './Ownable.sol';
 
-contract WPPCrowdsale is  CrowdsaleToken {
-// using SafeMath library
+contract WPPCrowdsale is CrowdsaleToken {
+    // using SafeMath library
     using SafeMath for uint256;
 
     // state variables
@@ -58,8 +58,8 @@ contract WPPCrowdsale is  CrowdsaleToken {
         // accept funds
         require(isValidInvestment(msg.value));
 
-        investmentAmountOf[msg.sender] =investmentAmountOf[msg.sender].add( msg.value);
-        investmentReceived =investmentReceived.add( msg.value);
+        investmentAmountOf[msg.sender] = investmentAmountOf[msg.sender].add(msg.value);
+        investmentReceived = investmentReceived.add(msg.value);
         // transfer funds to owner
         owner.transfer(msg.value);
 
@@ -100,7 +100,7 @@ contract WPPCrowdsale is  CrowdsaleToken {
     function finalize() onlyOwner public {
         if (isFinalized) revert();
         // only for test purpose
-         bool isCrowdsaleComplete = true;
+        bool isCrowdsaleComplete = true;
         //bool isCrowdsaleComplete = now > endTime;
         bool investmentObjectiveMet = investmentReceived >= weiInvestmentObjective;
 
@@ -132,5 +132,5 @@ contract WPPCrowdsale is  CrowdsaleToken {
         emit Refund(investor, investment);
 
     }
-    
+
 }
